@@ -1,3 +1,59 @@
 .App {
   text-align: center;
 }
+
+.Navbar {
+  width: 100vw;
+  background-color: cornflowerblue;
+  font-size: 2.75rem;
+  margin: 0;
+  padding: 15px 0px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  font-weight: 500;
+}
+
+.container {
+  width: 100%;
+  padding-top: 7rem;
+  background-color: blueviolet;
+  min-height: calc(100vh - 7rem);
+  /*Flexbox related below*/
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.body-block {
+  background-color: beige;
+  font-size: 1rem;
+  max-width: 500px;
+  width: 85%;
+  min-height: 150px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.players {
+  margin: 15px;
+}
+
+.LeaderboardPlayer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: stretch;
+}
+
+.LeaderboardPlayer>div {
+  width: 20%;
+  margin: 5px;
+  font-size: 1.2rem;
+}
+
+.body-header {
+  font-weight: 400;
+  font-size: 1.9rem;
+}
