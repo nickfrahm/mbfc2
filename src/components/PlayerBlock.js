@@ -6,7 +6,12 @@ const PlayerBlock = ({ player }) => {
       <h3 className='body-header'>{player.name}</h3>
       <div className='player-teams'>
         {player.teams.map((team) => {
-          return <div>{team.name}</div>;
+          return (
+            <div className='player-team'>
+              <div className='team'>{team.name}</div>
+              <div className='points'>{team.points}</div>
+            </div>
+          );
         })}
       </div>
     </div>

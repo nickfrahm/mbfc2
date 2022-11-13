@@ -4,7 +4,7 @@
 
 .Navbar {
   width: 100vw;
-  background-color: cornflowerblue;
+  background-color: rgb(33, 106, 241);
   font-size: 2.75rem;
   margin: 0;
   padding: 15px 0px;
@@ -12,12 +12,13 @@
   top: 0;
   z-index: 1000;
   font-weight: 500;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .4);
 }
 
 .container {
   width: 100%;
   padding-top: 7rem;
-  background-color: blueviolet;
+  background-color: rgb(182, 182, 182);
   min-height: calc(100vh - 7rem);
   /*Flexbox related below*/
   display: flex;
@@ -27,7 +28,7 @@
 }
 
 .body-block {
-  background-color: beige;
+  background-color: rgb(129, 129, 129);
   font-size: 1rem;
   max-width: 500px;
   width: 85%;
@@ -56,4 +57,31 @@
 .body-header {
   font-weight: 400;
   font-size: 1.9rem;
+}
+
+.player-teams {
+  margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.player-team {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.team {
+  width: 40%;
+  font-size: .85rem;
+}
+
+.points {
+  width: 15%;
+}
+
+button {
+  margin-top: 120px;
 }
