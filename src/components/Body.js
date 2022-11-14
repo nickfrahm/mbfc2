@@ -7,7 +7,7 @@ const Body = ({ players }) => {
     <div className='container'>
       <Leaderboard players={players} />
       {players.map((player) => (
-        <PlayerBlock player={player} />
+        <PlayerBlock key={player.id} player={player} />
       ))}
     </div>
   );

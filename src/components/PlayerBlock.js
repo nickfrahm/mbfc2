@@ -5,11 +5,11 @@ const PlayerBlock = ({ player }) => {
     <div className='PlayerBlock body-block'>
       <h3 className='body-header'>{player.name}</h3>
       <div className='player-teams'>
-        {player.teams.map((team) => {
+        {player.teamIds.map((team) => {
           return (
-            <div className='player-team'>
-              <div className='team'>{team.name}</div>
-              <div className='points'>{team.points}</div>
+            <div className='player-team' key={team.id}>
+              <div className='team'>{team.team}</div>
+              <div className='points'>{team.id}</div>
             </div>
           );
         })}
