@@ -100,3 +100,35 @@
     leagueId: 39,
   },
 ];
+
+const oneHour = 1000 * 60 * 60;
+
+//if there is tableData in local storage
+if (getLocalTableData() !== null) {
+  //if local table data is older than an hour, get new data
+  if (currentTime - oneHour > getLocalTableData().time) {
+    fetchSingleTable(
+      setTableData,
+      process.env.REACT_APP_ENG_ID,
+      process.env.REACT_APP_SEASON
+    );
+    console.log('new table data after its an hour old');
+    console.log(tableData);
+  } else {
+    //use what's in storage
+    setTableData(getLocalTableData().tableData);
+    console.log('tableData from storage');
+    console.log(tableData);
+  }
+} else {
+  console.log('no table data in storage');
+  console.log(tableData);
+  fetchSingleTable(
+    setTableData,
+    process.env.REACT_APP_ENG_ID,
+    process.env.REACT_APP_SEASON
+  );
+  //no table data in storage
+  console.log(tableData);
+  setLocalTableData({ currentTime, tableData });
+}

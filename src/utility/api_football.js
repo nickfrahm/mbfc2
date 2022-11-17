@@ -69,23 +69,22 @@ function fetchTop5Tables() {
   return tables;
 }
 
-function fetchSingleTable(league, year) {
-  fetch(url + 'standings?league=' + league + '&season=' + year, {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-host': 'v3.football.api-sports.io',
-      'x-rapidapi-key': process.env.REACT_APP_API_FOOTBALL_KEY,
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((resp) => {
-      console.log(parseTable(resp.response));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+async function fetchSingleTable(league, year) {
+  const res = await fetch(
+    url + 'standings?league=' + league + '&season=' + year,
+    {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': 'v3.football.api-sports.io',
+        'x-rapidapi-key': process.env.REACT_APP_API_FOOTBALL_KEY,
+      },
+    }
+  ).catch((err) => {
+    console.log(err);
+  });
+  const data = await res.json();
+
+  return parseTable(data.response);
 }
 
 function parseTable(resp) {
