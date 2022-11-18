@@ -1,3 +1,5 @@
+import { setLocalTableData } from './localStorage';
+
 const leagues = [
   parseInt(process.env.REACT_APP_ENG_ID),
   parseInt(process.env.REACT_APP_ESP_ID),
@@ -36,7 +38,7 @@ function parseLeagueResponse(resp) {
   return top5Leagues;
 }
 
-function fetchTop5Tables() {
+function fetchTop5Tables(currentTime, state, setState) {
   let tables = [];
 
   leagues.forEach((lg) => {
@@ -54,22 +56,20 @@ function fetchTop5Tables() {
         },
       }
     )
-      .then((response) => {
-        return response.json();
-      })
-      .then((resp) => {
-        //tables.push(resp.response);
-        tables.push(parseTable(resp.response));
+      .then((res) => res.json())
+      .then((data) => {
+        const table = parseTable(data.response);
+        tables.push(table);
+        setState(tables);
+        setLocalTableData(currentTime, tables);
       })
       .catch((err) => {
         console.log(err);
       });
   });
-  console.log(tables);
-  return tables;
 }
 
-async function fetchSingleTable(league, year) {
+async function fetchSingleTable(league, year, currentTime, setState) {
   const res = await fetch(
     url + 'standings?league=' + league + '&season=' + year,
     {
@@ -82,9 +82,11 @@ async function fetchSingleTable(league, year) {
   ).catch((err) => {
     console.log(err);
   });
-  const data = await res.json();
 
-  return parseTable(data.response);
+  const data = await res.json();
+  const tables = parseTable(data.response);
+  setState(tables);
+  setLocalTableData(currentTime, tables);
 }
 
 function parseTable(resp) {
