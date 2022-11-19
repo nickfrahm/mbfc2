@@ -2,6 +2,7 @@ import './App.css';
 import Body from './components/Body';
 import Nav from './components/Nav';
 import playerData from './PlayerData';
+import Spinner from './components/Spinner';
 import { fetchTop5Tables } from './utility/api_football';
 import { getLocalTableData } from './utility/localStorage';
 import { useState, useEffect, useRef } from 'react';
@@ -49,12 +50,16 @@ function App() {
   return (
     <div className='App'>
       <Nav />
-      <Body
-        players={players}
-        tables={tables}
-        setPlayers={setPlayers}
-        tablesLoaded={tablesLoaded}
-      />
+      {!tablesLoaded ? (
+        <Spinner />
+      ) : (
+        <Body
+          players={players}
+          tables={tables}
+          setPlayers={setPlayers}
+          tablesLoaded={tablesLoaded}
+        />
+      )}
     </div>
   );
 }
