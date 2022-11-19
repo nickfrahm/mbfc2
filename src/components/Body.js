@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Leaderboard from './Leaderboard';
 import PlayerBlock from './PlayerBlock';
 
 const Body = ({ players, tables, setPlayers, tablesLoaded }) => {
+  const oneLoad = useRef(false);
+
   useEffect(() => {
-    console.log('useEffect Body');
-    if (tablesLoaded) {
-      console.log(tablesLoaded);
-      console.log(tables);
-      console.log(players);
+    console.log('useEffect Body.js');
+    if (!oneLoad.current) {
+      oneLoad.current = true;
       const playersWithTeamsArr = players.map((player) => {
         let teams = [];
         let pointsTotal = 0;
@@ -32,7 +32,6 @@ const Body = ({ players, tables, setPlayers, tablesLoaded }) => {
           points: pointsTotal,
         };
       });
-      console.log(playersWithTeamsArr);
       const sortedArr = playersWithTeamsArr.map((player) => {
         let teamSort = player.teamIds.sort((a, b) => {
           return a.points < b.points;
