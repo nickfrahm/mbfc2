@@ -2,12 +2,8 @@ import './App.css';
 import Body from './components/Body';
 import Nav from './components/Nav';
 import playerData from './PlayerData';
-import { fetchSingleTable, fetchTop5Tables } from './utility/api_football';
-import {
-  useLocalStorage,
-  getLocalTableData,
-  setLocalTableData,
-} from './utility/localStorage';
+import { fetchTop5Tables } from './utility/api_football';
+import { getLocalTableData } from './utility/localStorage';
 import { useState, useEffect, useRef } from 'react';
 
 function App() {
@@ -17,6 +13,7 @@ function App() {
     return date.getTime();
   });
   const [tables, setTables] = useState([]);
+  const [tablesLoaded, setTablesLoaded] = useState(false);
   const ref = useRef(false); //prevent from running the initial mount useEffect again
 
   useEffect(() => {
@@ -30,11 +27,11 @@ function App() {
       if (getLocalTableData() !== null) {
         //if local table data is older than an hour, get new data
         if (currentTime - oneHour > getLocalTableData().time) {
-          fetchTop5Tables(currentTime, setTables);
+          fetchTop5Tables(currentTime, tables, setTables);
         } else {
           //use what's in storage
           setTables(getLocalTableData().tables);
-          console.log('tables from storage');
+          console.log('TABLES FROM STORAGE');
         }
       } else {
         console.log('no table data in storage');
@@ -43,10 +40,21 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (tables.length > 0) {
+      setTablesLoaded(true);
+    }
+  }, [tables]);
+
   return (
     <div className='App'>
       <Nav />
-      <Body players={players} />
+      <Body
+        players={players}
+        tables={tables}
+        setPlayers={setPlayers}
+        tablesLoaded={tablesLoaded}
+      />
     </div>
   );
 }

@@ -7,9 +7,9 @@ const PlayerBlock = ({ player }) => {
       <div className='player-teams'>
         {player.teamIds.map((team) => {
           return (
-            <div className='player-team' key={team.id}>
+            <div className='player-team' key={team.teamId * team.leagueId}>
               <div className='team'>{team.team}</div>
-              <div className='points'>{team.id}</div>
+              <div className='points'>{team.points}</div>
             </div>
           );
         })}
