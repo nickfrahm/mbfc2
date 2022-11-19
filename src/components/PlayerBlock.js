@@ -1,4 +1,5 @@
 import React from 'react';
+import uniqid from 'uniqid';
 
 const PlayerBlock = ({ player }) => {
   return (
@@ -7,8 +8,8 @@ const PlayerBlock = ({ player }) => {
       <div className='player-teams'>
         {player.teamIds.map((team) => {
           return (
-            <div className='player-team' key={team.teamId * team.leagueId}>
-              <div className='team'>{team.team}</div>
+            <div className='player-team' key={uniqid()}>
+              <div className='team'>{team.name}</div>
               <div className='points'>{team.points}</div>
             </div>
           );

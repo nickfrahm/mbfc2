@@ -11,24 +11,45 @@ const Body = ({ players, tables, setPlayers, tablesLoaded }) => {
       console.log(players);
       const playersWithTeamsArr = players.map((player) => {
         let teams = [];
+        let pointsTotal = 0;
         player.teamIds.forEach((team) => {
           tables.forEach((table) => {
             table.forEach((t) => {
-              if (t.teamId === team.team && t.leagueId == team.league) {
+              if (
+                t.teamId === team.team &&
+                t.leagueId.toString() === team.league
+              ) {
                 teams.push(t);
+                pointsTotal += t.points;
               }
             });
           });
         });
-
         return {
           id: player.id,
           name: player.name,
           teamIds: teams,
+          points: pointsTotal,
         };
       });
       console.log(playersWithTeamsArr);
-      setPlayers(playersWithTeamsArr);
+      const sortedArr = playersWithTeamsArr.map((player) => {
+        let teamSort = player.teamIds.sort((a, b) => {
+          return a.points < b.points;
+        });
+        return {
+          id: player.id,
+          name: player.name,
+          teamIds: teamSort,
+          points: player.points,
+        };
+      });
+
+      const sortLeaderBoard = sortedArr.sort((a, b) => {
+        return a.points < b.points;
+      });
+
+      setPlayers(sortLeaderBoard);
     }
   }, [tablesLoaded]);
 
