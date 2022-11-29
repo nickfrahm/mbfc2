@@ -6,9 +6,6 @@ const Body = ({ players, tables, setPlayers, tablesLoaded }) => {
   useEffect(() => {
     console.log('useEffect Body');
     if (tablesLoaded) {
-      console.log(tablesLoaded);
-      console.log(tables);
-      console.log(players);
       const playersWithTeamsArr = players.map((player) => {
         let teams = [];
         let pointsTotal = 0;
@@ -32,7 +29,6 @@ const Body = ({ players, tables, setPlayers, tablesLoaded }) => {
           points: pointsTotal,
         };
       });
-      console.log(playersWithTeamsArr);
       const sortedArr = playersWithTeamsArr.map((player) => {
         let teamSort = player.teamIds.sort((a, b) => {
           return a.points < b.points;
@@ -50,8 +46,9 @@ const Body = ({ players, tables, setPlayers, tablesLoaded }) => {
       });
 
       setPlayers(sortLeaderBoard);
+      console.log('body UseEffect end');
     }
-  }, [tablesLoaded]);
+  }, [tablesLoaded, tables]);
 
   return (
     <div className='container'>

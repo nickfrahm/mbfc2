@@ -38,7 +38,7 @@ function parseLeagueResponse(resp) {
   return top5Leagues;
 }
 
-function fetchTop5Tables(currentTime, state, setState) {
+function fetchTop5Tables(currentTime, setState, setLoaded) {
   let tables = [];
 
   leagues.forEach((lg) => {
@@ -60,8 +60,11 @@ function fetchTop5Tables(currentTime, state, setState) {
       .then((data) => {
         const table = parseTable(data.response);
         tables.push(table);
+
         setState(tables);
         setLocalTableData(currentTime, tables);
+        setLoaded(true);
+        console.log('Setting table state in fetch');
       })
       .catch((err) => {
         console.log(err);

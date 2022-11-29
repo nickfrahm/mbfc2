@@ -28,24 +28,19 @@ function App() {
       if (getLocalTableData() !== null) {
         //if local table data is older than an hour, get new data
         if (currentTime - oneHour > getLocalTableData().time) {
-          fetchTop5Tables(currentTime, tables, setTables);
+          fetchTop5Tables(currentTime, setTables, setTablesLoaded);
         } else {
           //use what's in storage
           setTables(getLocalTableData().tables);
+          setTablesLoaded(true);
           console.log('TABLES FROM STORAGE');
         }
       } else {
         console.log('no table data in storage');
-        fetchTop5Tables(currentTime, tables, setTables);
+        fetchTop5Tables(currentTime, setTables, setTablesLoaded);
       }
     }
-  }, []);
-
-  useEffect(() => {
-    if (tables.length > 0) {
-      setTablesLoaded(true);
-    }
-  }, [tables]);
+  }, [players]);
 
   return (
     <div className='App'>
