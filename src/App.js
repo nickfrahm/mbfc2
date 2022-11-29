@@ -18,7 +18,7 @@ function App() {
   const ref = useRef(false); //prevent from running the initial mount useEffect again
 
   useEffect(() => {
-    console.log('start useEffect');
+    console.log('start App.js useEffect');
     if (!ref.current) {
       ref.current = true; //prevent from running the initial mount useEffect again
       console.log('ref set to false');
@@ -42,6 +42,10 @@ function App() {
     }
   }, [players]);
 
+  const updatePlayers = (arr) => {
+    setPlayers(arr);
+  };
+
   return (
     <div className='App'>
       <Nav />
@@ -51,7 +55,7 @@ function App() {
         <Body
           players={players}
           tables={tables}
-          setPlayers={setPlayers}
+          setPlayers={updatePlayers}
           tablesLoaded={tablesLoaded}
         />
       )}
