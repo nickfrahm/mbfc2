@@ -51,13 +51,13 @@ const Body = ({ players, tables, setPlayers, tablesLoaded }) => {
       setPlayers(sortLeaderBoard);
       console.log('body UseEffect end');
     }
-  }, [tablesLoaded, tables]);
+  }, [tables]);
 
   return (
     <div className='container'>
       <Leaderboard players={players} tables={tables} />
-      {players.map((player) => (
-        <PlayerBlock key={player.id} player={player} />
+      {players.map((p) => (
+        <PlayerBlock key={p.id} player={p} />
       ))}
     </div>
   );

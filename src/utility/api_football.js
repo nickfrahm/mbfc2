@@ -38,38 +38,42 @@ function parseLeagueResponse(resp) {
   return top5Leagues;
 }
 
-function fetchTop5Tables(currentTime, setState, setLoaded) {
-  let tables = [];
+function fetchTop5Tables(currentTime, setState, setLoaded, loaded) {
+  if (!loaded) {
+    let tables = [];
 
-  leagues.forEach((lg) => {
-    fetch(
-      url +
-        'standings?league=' +
-        lg +
-        '&season=' +
-        process.env.REACT_APP_SEASON,
-      {
-        method: 'GET',
-        headers: {
-          'x-rapidapi-host': 'v3.football.api-sports.io',
-          'x-rapidapi-key': process.env.REACT_APP_API_FOOTBALL_KEY,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const table = parseTable(data.response);
-        tables.push(table);
+    leagues.forEach(async (lg) => {
+      await fetch(
+        url +
+          'standings?league=' +
+          lg +
+          '&season=' +
+          process.env.REACT_APP_SEASON,
+        {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-host': 'v3.football.api-sports.io',
+            'x-rapidapi-key': process.env.REACT_APP_API_FOOTBALL_KEY,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('pushing table data to table array');
+          const table = parseTable(data.response);
+          tables.push(table);
 
-        setState(tables);
-        setLocalTableData(currentTime, tables);
-        setLoaded(true);
-        console.log('Setting table state in fetch');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
+          //setState(tables);
+          //setLocalTableData(currentTime, tables);
+          setLoaded(true);
+          //console.log('Setting table state in fetch');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    return tables;
+  }
 }
 
 async function fetchSingleTable(league, year, currentTime, setState) {

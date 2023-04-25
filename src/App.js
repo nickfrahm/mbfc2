@@ -4,7 +4,7 @@ import Nav from './components/Nav';
 import playerData from './PlayerData';
 import Spinner from './components/Spinner';
 import { fetchTop5Tables } from './utility/api_football';
-import { getLocalTableData } from './utility/localStorage';
+import { getLocalTableData, setLocalTableData } from './utility/localStorage';
 import { useState, useEffect, useRef } from 'react';
 
 function App() {
@@ -17,8 +17,63 @@ function App() {
   const [tablesLoaded, setTablesLoaded] = useState(false);
   const ref = useRef(false); //prevent from running the initial mount useEffect again
 
+  const leagues = [
+    parseInt(process.env.REACT_APP_ENG_ID),
+    parseInt(process.env.REACT_APP_ESP_ID),
+    parseInt(process.env.REACT_APP_FRA_ID),
+    parseInt(process.env.REACT_APP_GER_ID),
+    parseInt(process.env.REACT_APP_ITA_ID),
+  ];
+
   useEffect(() => {
     console.log('start App.js useEffect');
+
+    const fetchTablesFromApi = async () => {
+      const url = process.env.REACT_APP_API_FOOTBALL_URL;
+      const parseTable = (resp) => {
+        return resp[0].league.standings[0].map((team) => {
+          return {
+            points: team.points,
+            teamId: team.team.id,
+            name: team.team.name,
+            leagueId: resp[0].league.id,
+          };
+        });
+      };
+      let tables = [];
+
+      await Promise.all(
+        leagues.map(async (lg) => {
+          await fetch(
+            url +
+              'standings?league=' +
+              lg +
+              '&season=' +
+              process.env.REACT_APP_SEASON,
+            {
+              method: 'GET',
+              headers: {
+                'x-rapidapi-host': 'v3.football.api-sports.io',
+                'x-rapidapi-key': process.env.REACT_APP_API_FOOTBALL_KEY,
+              },
+            }
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              console.log('pushing table data to table array');
+              const table = parseTable(data.response);
+              tables.push(table);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+      );
+      setTables(tables);
+      setTablesLoaded(true);
+      setLocalTableData(currentTime, tables);
+    };
+
     if (!ref.current) {
       ref.current = true; //prevent from running the initial mount useEffect again
       console.log('ref set to false');
@@ -28,7 +83,7 @@ function App() {
       if (getLocalTableData() !== null) {
         //if local table data is older than an hour, get new data
         if (currentTime - oneHour > getLocalTableData().time) {
-          fetchTop5Tables(currentTime, setTables, setTablesLoaded);
+          fetchTablesFromApi();
         } else {
           //use what's in storage
           setTables(getLocalTableData().tables);
@@ -37,10 +92,10 @@ function App() {
         }
       } else {
         console.log('no table data in storage');
-        fetchTop5Tables(currentTime, setTables, setTablesLoaded);
+        fetchTablesFromApi();
       }
     }
-  }, [players]);
+  }, []);
 
   const updatePlayers = (arr) => {
     setPlayers(arr);
@@ -49,15 +104,15 @@ function App() {
   return (
     <div className='App'>
       <Nav />
-      {!tablesLoaded ? (
-        <Spinner />
-      ) : (
+      {tablesLoaded ? (
         <Body
           players={players}
           tables={tables}
           setPlayers={updatePlayers}
           tablesLoaded={tablesLoaded}
         />
+      ) : (
+        <Spinner />
       )}
     </div>
   );
