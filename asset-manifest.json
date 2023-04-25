@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/mbfc2/static/css/main.39ea50d6.css",
+    "main.js": "/mbfc2/static/js/main.2e2a87b5.js",
+    "static/media/ball.png": "/mbfc2/static/media/ball.e250d252073698951303.png",
+    "index.html": "/mbfc2/index.html",
+    "main.39ea50d6.css.map": "/mbfc2/static/css/main.39ea50d6.css.map",
+    "main.2e2a87b5.js.map": "/mbfc2/static/js/main.2e2a87b5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.39ea50d6.css",
+    "static/js/main.2e2a87b5.js"
+  ]
+}
